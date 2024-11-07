@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {Link, useNavigate} from "react-router-dom";
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from "../firebase/firebase";
 
-function Login() {
+function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const location = useLocation();
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            handleLogin(e);
+        } catch (error) {
+            setError("Failed to register: " + error.message);
+        }
+    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -23,9 +32,9 @@ function Login() {
 
     return (
         <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <form onSubmit={handleLogin} className="space-y-4">
-                <h1>Connexion</h1>
+            {error && <p style={{color: "red"}}>{error}</p>}
+            <form onSubmit={handleRegister} className="space-y-4">
+                <h1>Inscription</h1>
                 <input
                     type="email"
                     value={email}
@@ -43,16 +52,16 @@ function Login() {
                     className="w-full p-2 border rounded"
                 />
                 <button type="submit" className="w-full p-2 bg-indigo-600 text-white rounded hover:bg-indigo-500">
-                    Connexion
+                    S'inscrire
                 </button>
             </form>
             <div className="mt-4 flex justify-between">
-                <Link to="/register" className="text-indigo-600 hover:underline">
-                    Vous n'avez pas de compte? Inscrivez-vous
+                <Link to="/login" className="text-indigo-600 hover:underline">
+                    Vous avez deja un compte? Connectez-vous
                 </Link>
             </div>
         </div>
     );
 }
 
-export default Login;
+export default Register;

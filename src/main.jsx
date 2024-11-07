@@ -13,6 +13,9 @@ import ViewExpense from "./routes/ViewExpense.jsx";
 import { ExpensesProvider } from "./context/expensesContext/ExpensesContext.jsx";
 import RecentActivity from "./routes/RecentActivity.jsx";
 import {AuthProvider} from "./context/authContext/authContext.jsx";
+import Login from "./routes/Login.jsx";
+import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import Register from "./routes/Register.jsx";
 
 const router = createBrowserRouter([
     {
@@ -21,23 +24,31 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <RecentActivity />,
+                element: (<ProtectedRoute><RecentActivity /></ProtectedRoute>),
             },
             {
                 path: "depense/cree",
-                element: <CreateExpense />,
+                element: (<ProtectedRoute><CreateExpense /></ProtectedRoute>),
             },
             {
                 path: "depense/:id",
-                element: <ViewExpense />,
+                element: (<ProtectedRoute><ViewExpense /></ProtectedRoute>),
             },
             {
                 path: "depense/:id/modifier",
-                element: <EditExpense />,
+                element: (<ProtectedRoute><EditExpense /></ProtectedRoute>),
             },
         ],
-        element: <Root />,
+        element: (<ProtectedRoute><Root /></ProtectedRoute>),
     },
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "/register",
+        element: <Register/>,
+    }
 ]);
 
 createRoot(document.getElementById('root')).render(

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/20/solid";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import { useNavigate } from "react-router-dom";
 
 const navigation = [
     { name: "Accueil", href: "#" }
@@ -8,6 +11,12 @@ const navigation = [
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await signOut(auth);
+        navigate("/login");
+    };
 
     return (
         <header className="absolute inset-x-0 top-0 z-50 flex h-16 border-b border-gray-900/10">
@@ -29,7 +38,11 @@ export default function Header() {
                         </a>
                     ))}
                 </nav>
-                <div className="flex flex-1 items-center justify-end gap-x-8"></div>
+                <div className="flex flex-1 items-center justify-end gap-x-8">
+                    <button onClick={handleLogout} className="text-red-600 hover:underline">
+                        Déconnexion
+                    </button>
+                </div>
             </div>
             <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
                 <div className="fixed inset-0 z-50" />
@@ -54,6 +67,9 @@ export default function Header() {
                                 {item.name}
                             </a>
                         ))}
+                        <button onClick={handleLogout} className="block w-full text-left px-3 py-2 text-base/7 font-semibold text-red-600 hover:bg-gray-50">
+                            Déconnexion
+                        </button>
                     </div>
                 </DialogPanel>
             </Dialog>
