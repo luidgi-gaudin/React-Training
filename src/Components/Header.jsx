@@ -4,6 +4,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/20/solid";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import {useAuth} from "../context/authContext/authContext.jsx";
 
 const navigation = [
     { name: "Accueil", href: "#" }
@@ -67,6 +68,7 @@ export default function Header() {
                                 {item.name}
                             </a>
                         ))}
+                        <p>connecter en tant que {useAuth.email}</p>
                         <button onClick={handleLogout} className="block w-full text-left px-3 py-2 text-base/7 font-semibold text-red-600 hover:bg-gray-50">
                             Déconnexion
                         </button>
