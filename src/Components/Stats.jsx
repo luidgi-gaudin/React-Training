@@ -1,4 +1,4 @@
-import { useExpenses } from "../Expenses.jsx";
+import { useExpenses } from "../context/expensesContext/ExpensesContext.jsx";
 
 export default function Stats() {
     const { expenses } = useExpenses();

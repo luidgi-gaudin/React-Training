@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import Header from "../Components/Header";
 import Stats from "../Components/Stats";
-import RecentActivity from "../Components/RecentActivity.jsx";
-import Modal from "../components/Modal";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 
 const secondaryNavigation = [
@@ -13,19 +10,6 @@ const secondaryNavigation = [
 ];
 
 export default function Root() {
-    const location = useLocation();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState(null);
-
-    const openModal = (content) => {
-        setModalContent(content);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setModalContent(null);
-    };
 
     return (
         <>
@@ -69,10 +53,7 @@ export default function Root() {
                         />
                     </div>
                 </div>
-                <RecentActivity openModal={openModal} closeModal={closeModal} />
-                <Modal isOpen={isModalOpen} closeModal={closeModal}>
-                    {modalContent}
-                </Modal>
+                <Outlet />
             </main>
         </>
     );

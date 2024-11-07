@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import { useExpenses } from "../Expenses.jsx";
+import { useExpenses } from "../context/expensesContext/ExpensesContext.jsx";
 
 export default function CreateExpense() {
     const [title, setTitle] = useState("");
@@ -17,7 +17,7 @@ export default function CreateExpense() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+        <form onSubmit={handleSubmit} className="m-2 max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Créer une dépense</h2>
             <input
                 type="text"

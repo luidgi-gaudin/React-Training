@@ -1,16 +1,15 @@
 import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
-import { useExpenses } from "../Expenses.jsx";
-import ViewExpense from "../routes/ViewExpense";
-import EditExpense from "../routes/EditExpense";
-import SearchBar from "./SearchBar";
+import { useExpenses } from "../context/expensesContext/ExpensesContext.jsx";
+import SearchBar from "../Components/SearchBar.jsx";
+import {Link} from "react-router-dom";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
-export default function RecentActivity({ openModal, closeModal }) {
+export default function RecentActivity() {
     const { expenses, deleteExpense } = useExpenses();
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -90,28 +89,27 @@ export default function RecentActivity({ openModal, closeModal }) {
                                                             <div className="py-1">
                                                                 <Menu.Item>
                                                                     {({ active }) => (
-                                                                        <button
-                                                                            onClick={() => openModal(<ViewExpense id={expense.id} closeModal={closeModal} />)}
+                                                                        <Link to={`/depense/${expense.id}`}
                                                                             className={classNames(
                                                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                                                 'block w-full text-left px-4 py-2 text-sm'
                                                                             )}
                                                                         >
                                                                             Détails
-                                                                        </button>
+                                                                        </Link>
                                                                     )}
                                                                 </Menu.Item>
                                                                 <Menu.Item>
                                                                     {({ active }) => (
-                                                                        <button
-                                                                            onClick={() => openModal(<EditExpense id={expense.id} closeModal={closeModal} />)}
+                                                                        <Link
+                                                                            to={`/depense/${expense.id}/modifier`}
                                                                             className={classNames(
                                                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                                                 'block w-full text-left px-4 py-2 text-sm'
                                                                             )}
                                                                         >
                                                                             Modifier
-                                                                        </button>
+                                                                        </Link>
                                                                     )}
                                                                 </Menu.Item>
                                                                 <Menu.Item>
