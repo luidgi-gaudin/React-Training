@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/20/solid";
-import { signOut } from "firebase/auth";
+import { signOut} from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import {useAuth} from "../context/authContext/authContext.jsx";
+
 
 const navigation = [
     { name: "Accueil", href: "#" }
@@ -13,6 +13,8 @@ const navigation = [
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
+
+    const user = auth.currentUser;
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -31,6 +33,7 @@ export default function Header() {
                         <span className="sr-only">Ouvrir le menu principal</span>
                         <Bars3Icon aria-hidden="true" className="h-5 w-5 text-gray-900" />
                     </button>
+                    <p>Connecté en tant que {user.email}</p>
                 </div>
                 <nav className="hidden md:flex md:gap-x-11 md:text-sm/6 md:font-semibold md:text-gray-700">
                     {navigation.map((item, itemIdx) => (
@@ -68,7 +71,6 @@ export default function Header() {
                                 {item.name}
                             </a>
                         ))}
-                        <p>connecter en tant que {useAuth.email}</p>
                         <button onClick={handleLogout} className="block w-full text-left px-3 py-2 text-base/7 font-semibold text-red-600 hover:bg-gray-50">
                             Déconnexion
                         </button>

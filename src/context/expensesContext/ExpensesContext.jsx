@@ -35,6 +35,8 @@ export function ExpensesProvider({ children }) {
     ]);
 
     const addExpense = (expense) => {
+        // tenter une synchor en base de donnnees si ca marche
+        // appeler une methode qui met a jour
         setExpenses([...expenses, { ...expense, id: Date.now() }]);
     };
 
