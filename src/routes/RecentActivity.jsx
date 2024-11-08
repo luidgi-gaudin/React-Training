@@ -3,7 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { useExpenses } from "../context/expensesContext/ExpensesContext.jsx";
 import SearchBar from "../Components/SearchBar.jsx";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -90,10 +90,10 @@ export default function RecentActivity() {
                                                                 <Menu.Item>
                                                                     {({ active }) => (
                                                                         <Link to={`/depense/${expense.id}`}
-                                                                            className={classNames(
-                                                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                                'block w-full text-left px-4 py-2 text-sm'
-                                                                            )}
+                                                                              className={classNames(
+                                                                                  active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                                                  'block w-full text-left px-4 py-2 text-sm'
+                                                                              )}
                                                                         >
                                                                             Détails
                                                                         </Link>

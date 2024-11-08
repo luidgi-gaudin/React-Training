@@ -1,50 +1,39 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import { bdd } from "../../firebase/firebase";
 
-// Create a context for expenses
 const ExpensesContext = createContext();
 
-// Custom hook to use the ExpensesContext
 export function useExpenses() {
     return useContext(ExpensesContext);
 }
 
-// Provider component to wrap the application
 export function ExpensesProvider({ children }) {
-    const [expenses, setExpenses] = useState([
-        {
-            id: 1,
-            title: "Loyer",
-            amount: 500,
-            description: "Loyer du mois de juin",
-            date: "2021-06-01",
-        },
-        {
-            id: 2,
-            title: "Courses",
-            amount: 120,
-            description: "Courses du mois de juin",
-            date: "2021-06-02",
-        },
-        {
-            id: 3,
-            title: "Restaurant",
-            amount: 50,
-            description: "Restaurant du mois de juin",
-            date: "2021-06-03"
-        }
-    ]);
+    const [expenses, setExpenses] = useState([]);
 
-    const addExpense = (expense) => {
-        // tenter une synchor en base de donnnees si ca marche
-        // appeler une methode qui met a jour
-        setExpenses([...expenses, { ...expense, id: Date.now() }]);
+    useEffect(() => {
+        const fetchExpenses = async () => {
+            const querySnapshot = await getDocs(collection(bdd, "dépense"));
+            const expensesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setExpenses(expensesData);
+        };
+        fetchExpenses();
+    }, []);
+
+    const addExpense = async (expense) => {
+        const docRef = await addDoc(collection(bdd, "dépense"), expense);
+        setExpenses([...expenses, { id: docRef.id, ...expense }]);
     };
 
-    const editExpense = (id, updatedExpense) => {
-        setExpenses(expenses.map((expense) => (expense.id === id ? { ...updatedExpense, id } : expense)));
+    const editExpense = async (id, updatedExpense) => {
+        const expenseDoc = doc(bdd, "dépense", id);
+        await updateDoc(expenseDoc, updatedExpense);
+        setExpenses(expenses.map((expense) => (expense.id === id ? { id, ...updatedExpense } : expense)));
     };
 
-    const deleteExpense = (id) => {
+    const deleteExpense = async (id) => {
+        const expenseDoc = doc(bdd, "dépense", id);
+        await deleteDoc(expenseDoc);
         setExpenses(expenses.filter((expense) => expense.id !== id));
     };
 

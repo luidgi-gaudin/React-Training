@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useExpenses } from "../context/expensesContext/ExpensesContext.jsx";
 
 export default function CreateExpense() {
@@ -9,16 +9,23 @@ export default function CreateExpense() {
     const [date, setDate] = useState("");
     const { addExpense } = useExpenses();
     const navigate = useNavigate();
+    const [error, setError] = useState(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        addExpense({ title, amount, description, date });
-        navigate("/");
+        try {
+            await addExpense({ title, amount, description, date });
+            navigate("/");
+        } catch (err) {
+            setError("Failed to add expense. Please try again.");
+            console.error(err);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit} className="m-2 max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Créer une dépense</h2>
+            {error && <p className="text-red-500">{error}</p>}
             <input
                 type="text"
                 placeholder="Titre"

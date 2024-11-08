@@ -14,15 +14,15 @@ export default function EditExpense() {
     });
 
     useEffect(() => {
-        const fetchedExpense = expenses.find((exp) => exp.id === parseInt(id));
+        const fetchedExpense = expenses.find((exp) => exp.id === id);
         if (fetchedExpense) {
             setExpense(fetchedExpense);
         }
     }, [id, expenses]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        editExpense(parseInt(id), expense);
+        await editExpense(id, expense);
         navigate(`/`);
     };
 
